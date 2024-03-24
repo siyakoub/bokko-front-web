@@ -138,7 +138,7 @@ export async function login(loginUser: UserLogin) : Promise<User> {
     }
 }
 
-export async function logout(token: string): Promise<Boolean> {
+export async function logout(token: string): Promise<boolean> {
     const response = await fetch(baseUrl + '/logout', {
         method: 'DELETE',
         headers: {
@@ -153,7 +153,7 @@ export async function logout(token: string): Promise<Boolean> {
     } else {
         const data = await response.json();
         if (data['hasError'] === false) {
-            return data['content'] as Boolean;
+            return data['content'] as boolean;
         } else {
             throw new Error(data['errorMessage']);
         }

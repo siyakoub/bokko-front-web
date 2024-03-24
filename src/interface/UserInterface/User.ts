@@ -1,6 +1,6 @@
 export interface User {
     name: string,
-    passwordIsChange: false,
+    passwordIsChange: boolean,
     firstName: string,
     email: string,
     password: string,
