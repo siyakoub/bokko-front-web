@@ -1,6 +1,7 @@
 import {Profil} from "../interface/ProfilInterface/Profil";
 import {AddProfil} from "../interface/ProfilInterface/AddProfil";
 import {ProfilRegister} from "../interface/ProfilInterface/ProfilRegister";
+import {UpdateProfil} from "../interface/ProfilInterface/UpdateProfil";
 
 const baseUrl : string = 'http://localhost:2001/api/bokko/service/profil';
 
@@ -54,7 +55,8 @@ export async function create(token: string, email: string, addProfil: AddProfil)
         headers: {
             'Content-type': 'application/json',
             'token': token
-        }
+        },
+        body: JSON.stringify(addProfil)
     });
     if (response.status === 404) {
         throw new Error("Profil mail enregistré...")
@@ -70,13 +72,14 @@ export async function create(token: string, email: string, addProfil: AddProfil)
     }
 }
 
-export async function update(token: string, email: string, addProfil: AddProfil): Promise<Profil> {
+export async function update(token: string, email: string, updateProfil: UpdateProfil): Promise<Profil> {
     const response = await fetch(baseUrl + "/?email=" + email, {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
             'token': token
-        }
+        },
+        body: JSON.stringify(updateProfil)
     });
     if (response.status === 404) {
         throw new Error("Profil mal mis à jour...");

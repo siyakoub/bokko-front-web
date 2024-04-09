@@ -2,11 +2,12 @@ import * as React from 'react';
 import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import CssBaseline from '@mui/joy/CssBaseline';
+import {ProfilRegister} from "../../interface/ProfilInterface/ProfilRegister";
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
-import Checkbox from '@mui/joy/Checkbox';
 import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
+import { register } from '../../service/ProfilService';
 import FormLabel from '@mui/joy/FormLabel';
 import IconButton, { IconButtonProps } from '@mui/joy/IconButton';
 import Link from '@mui/joy/Link';
@@ -15,10 +16,15 @@ import Typography from '@mui/joy/Typography';
 import Stack from '@mui/joy/Stack';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
-import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
-import GoogleIcon from '../element/GoogleIcon';
-import LogoNaked from "../assets/logo/LogoNaked";
-import FullColorLogo from "../assets/logo/FullColorLogo";
+import GoogleIcon from '../../element/GoogleIcon';
+import LogoNaked from "../../assets/logo/LogoNaked";
+import FullColorLogo from "../../assets/logo/FullColorLogo";
+import {Textarea} from "@mui/joy";
+import {useState} from "react";
+import WhiteColorLogo from "../../assets/logo/WhiteColorLogo";
+import AspectRatio from "@mui/joy/AspectRatio";
+import {update as updateProfil} from "../../service/ProfilService";
+import {useNavigate} from "react-router-dom";
 
 interface FormElements extends HTMLFormControlsCollection {
     email: HTMLInputElement;
@@ -35,6 +41,7 @@ function ColorSchemeToggle(props: IconButtonProps) {
     const [mounted, setMounted] = React.useState(false);
 
     React.useEffect(() => setMounted(true), []);
+
 
     return (
         <IconButton
@@ -53,7 +60,51 @@ function ColorSchemeToggle(props: IconButtonProps) {
     );
 }
 
-export default function JoySignInSideTemplate() {
+export default function SignUp() {
+
+    const [imageFile, setImageFile] = useState("");
+
+    const navigate = useNavigate();
+
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files ? event.target.files[0] : null;
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                // Met à jour l'image de profil temporairement affichée
+                setImageFile(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleSubmit = async (event: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined; }) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const registerForm: ProfilRegister = {
+            name: String(data.get("name")),
+            firstName: String(data.get("firstName")),
+            email: String(data.get("email")),
+            password: String(data.get("password")),
+            telephone: String(data.get("phoneNumber")),
+            statut: "A",
+            bio: String(data.get("bio")),
+            photo: String(imageFile)
+        };
+        try {
+            const response = await register(registerForm);
+            if (response) {
+                navigate('/login');
+            } else {
+                console.log("Une erreur est survenue...");
+            }
+        } catch (e) {
+            console.log("Error during updating..." + e);
+        }
+    }
+
+
+
     return (
         <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
             <CssBaseline />
@@ -99,7 +150,9 @@ export default function JoySignInSideTemplate() {
                         }}
                     >
                         <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
-                            <FullColorLogo/>
+                            <Link href="/" level="title-sm">
+                                <FullColorLogo/>
+                            </Link>
                         </Box>
                         <ColorSchemeToggle />
                     </Box>
@@ -129,12 +182,12 @@ export default function JoySignInSideTemplate() {
                         <Stack gap={4} sx={{ mb: 2 }}>
                             <Stack gap={1}>
                                 <Typography component="h1" level="h3">
-                                    Sign in
+                                    Inscription
                                 </Typography>
                                 <Typography level="body-sm">
-                                    New to company?{' '}
-                                    <Link href="#replace-with-a-link" level="title-sm">
-                                        Sign up!
+                                    Vous possèdez déjà un compte ?{' '}
+                                    <Link href="/login" level="title-sm">
+                                        Connectez-vous !
                                     </Link>
                                 </Typography>
                             </Stack>
@@ -158,40 +211,63 @@ export default function JoySignInSideTemplate() {
                         </Divider>
                         <Stack gap={4} sx={{ mt: 2 }}>
                             <form
-                                onSubmit={(event: React.FormEvent<SignInFormElement>) => {
-                                    event.preventDefault();
-                                    const formElements = event.currentTarget.elements;
-                                    const data = {
-                                        email: formElements.email.value,
-                                        password: formElements.password.value,
-                                        persistent: formElements.persistent.checked,
-                                    };
-                                    alert(JSON.stringify(data, null, 2));
-                                }}
+                                onSubmit={handleSubmit}
                             >
                                 <FormControl required>
-                                    <FormLabel>Email</FormLabel>
-                                    <Input type="email" id="email" name="email" />
+                                    <FormLabel>Nom</FormLabel>
+                                    <Input type="text" id="name" name="name" required />
                                 </FormControl>
                                 <FormControl required>
-                                    <FormLabel>Password</FormLabel>
-                                    <Input type="password" id="password" name="password" />
+                                    <FormLabel>Prénom</FormLabel>
+                                    <Input type="text" id="firstName" name="firstName" required/>
                                 </FormControl>
+                                <FormControl required>
+                                    <FormLabel>E-mail</FormLabel>
+                                    <Input type="email" id="email" name="email" required />
+                                </FormControl>
+                                <FormControl required>
+                                    <FormLabel>Mot de passe</FormLabel>
+                                    <Input type="password" id="password" name="password" required />
+                                </FormControl>
+                                <FormControl required>
+                                    <FormLabel>Téléphone</FormLabel>
+                                    <Input type="tel" id="phoneNumber" name="phoneNumber" required />
+                                </FormControl>
+                                <FormControl required>
+                                    <FormLabel>Biographie (Facultatif)</FormLabel>
+                                    <Textarea
+                                        id="bio"
+                                        name="bio"
+                                        placeholder="Votre biographie ici"
+                                        // Vous pouvez ajuster le nombre de lignes initiales affichées avec la prop `minRows`
+                                        minRows={4}
+                                    />
+                                </FormControl>
+                                <Button
+                                    variant="outlined"
+                                    component="label"
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                >
+                                    Upload Image
+                                    <input
+                                        type="file"
+                                        hidden
+                                        accept=".jpg, .jpeg, .png"
+                                        onChange={handleImageChange}
+                                        required
+                                    />
+                                </Button>
+                                {imageFile && (
+                                    <Stack direction="column" spacing={1}>
+                                        <AspectRatio ratio="1" maxHeight={200} sx={{ flex: 1, minWidth: 50, maxWidth: 200, alignItems: "center", borderRadius: '100%' }}>
+                                            <img src={imageFile} alt="Photo de profil" id="pictureProfil" />
+                                        </AspectRatio>
+                                    </Stack>
+                                )}
                                 <Stack gap={4} sx={{ mt: 2 }}>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <Checkbox size="sm" label="Remember me" name="persistent" />
-                                        <Link level="title-sm" href="#replace-with-a-link">
-                                            Forgot your password?
-                                        </Link>
-                                    </Box>
                                     <Button type="submit" fullWidth>
-                                        Sign in
+                                        Inscription
                                     </Button>
                                 </Stack>
                             </form>
@@ -199,7 +275,7 @@ export default function JoySignInSideTemplate() {
                     </Box>
                     <Box component="footer" sx={{ py: 3 }}>
                         <Typography level="body-xs" textAlign="center">
-                            © Your company {new Date().getFullYear()}
+                            © Bokko {new Date().getFullYear()}
                         </Typography>
                     </Box>
                 </Box>
@@ -220,10 +296,10 @@ export default function JoySignInSideTemplate() {
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
                     backgroundImage:
-                        'url(https://eth3.pcloud.com/tLZ313ekDZyMAkZPUIbZZjg2g7kZaXHZJZZDuZuLZukZGFZfXZbtSsDur6p3yF3ubIXgQWqp2Weky0/img6.jpg)',
+                        'url(https://i.ibb.co/C9NWVmY/img6.jpg)',
                     [theme.getColorSchemeSelector('dark')]: {
                         backgroundImage:
-                            'url(https://eth2.pcloud.com/tLZAs3ekDZAitkZPUIbZZjg2g7kZaXHZJZZDuZuLZNHZqVZQ0ZSFucsP4tWWmFMSCPGaDhsm64KbtV/img4.jpg)',
+                            'url(https://i.ibb.co/qJNRTNc/img4.jpg)',
                     },
                 })}
             />

@@ -1,0 +1,90 @@
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espacement entre les champs de formulaire */
+    margin: 20px auto; /* Centrage automatique avec une marge */
+    padding: 10px;
+    max-width: 800px; /* Largeur maximale pour les grands écrans */
+    width: 100%; /* Utiliser toute la largeur disponible sur les petits écrans */
+    border: 1px solid #28477C; /* Bordure du formulaire */
+    border-radius: 8px; /* Bords arrondis */
+}
+
+.search-form button {
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px; /* Taille de texte pour les champs de saisie et le bouton */
+    background-color: #28477C; /* Couleur de fond pour le bouton */
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s; /* Animation de fond sur le survol */
+}
+
+.search-form button:hover {
+    background-color: #cccccc;
+}
+
+
+/* Media query pour les tablettes et les écrans moyens */
+@media (min-width: 576px) and (max-width: 767px) {
+    .search-form {
+        width: 90%; /* Adaptation de la largeur sur les tablettes */
+    }
+}
+
+/* Très petits écrans, typiquement smartphones */
+@media (max-width: 575px) {
+    .search-form {
+        width: 100%; /* Utiliser toute la largeur disponible */
+        padding: 10px;
+        gap: 5px; /* Réduire l'espacement pour un affichage compact */
+    }
+}
+/* Pour les iPad Air en orientation paysage */
+/* Pour les iPad Air et tablettes similaires */
+@media only screen and (min-width: 820px) and (max-width: 1180px) {
+    .search-form {
+        width: 100%; /* Utiliser toute la largeur disponible */
+        padding: 10px;
+        gap: 5px; /* Réduire l'espacement pour un affichage compact */
+    }
+
+}
+
+
+/* Media query pour les écrans d'ordinateurs portables et de bureau */
+@media (min-width: 768px) {
+    .search-form {
+        flex-direction: row;
+        justify-content: space-between; /* Répartition équitable de l'espace */
+        align-items: center;
+        max-width: 800px; /* Ajuster selon la largeur désirée */
+    }
+
+    .search-form input:not(:last-child),
+    .search-form button {
+        margin-right: 10px;
+    }
+
+    .search-form button {
+        flex-shrink: 0; /* Empêcher le bouton de se rétrécir par rapport aux champs de saisie */
+    }
+}
+
+/* Pour les grands écrans et moniteurs */
+@media (min-width: 1200px) {
+    .search-form {
+        /* Ajustement de la taille pour les grands écrans */
+        max-width: 1350px; /* Ou la largeur maximale que vous jugez appropriée */
+        /* Gardez l'espace entre les éléments du formulaire raisonnable */
+        gap: 30px;
+    }
+
+    /* Pour les inputs et boutons, vous pourriez vouloir augmenter la taille du texte ou le padding pour les grands écrans */
+    .search-form input,
+    .search-form button {
+    }
+
+    /* Si vous avez d'autres éléments dans votre .search-form, vous pouvez les ajuster ici aussi */
+}

@@ -1,0 +1,11 @@
+.footer-container {
+    background-color: #28477C; /* Couleur de fond spécifiée */
+    color: white; /* Couleur du texte pour assurer un bon contraste */
+    padding: 20px; /* Espace intérieur pour un peu de respiration */
+    text-align: center; /* Centrer le contenu du footer */
+}
+
+.footer-content p {
+    margin: 0; /* Réduire la marge par défaut des paragraphes pour un look plus compact */
+    font-size: 16px; /* Ajuster la taille de police si nécessaire */
+}

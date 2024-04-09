@@ -1,0 +1,108 @@
+.navbar {
+    background-color: #fff; /* Couleur de fond de la barre de navigation */
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,1); /* Ajoute une ombre pour un effet de profondeur */
+    transform: translateY(-1px); /* Décale légèrement la barre vers le haut pour qu'elle "ressorte" */
+    z-index: 1000; /* Assure que la navbar reste au-dessus des autres éléments */
+    position: relative; /* Nécessaire pour que transform et z-index fonctionnent correctement */
+}
+
+.navbar-menu {
+    display: flex;
+}
+
+.navbar-item {
+    margin-right: 1rem; /* Espace entre les éléments de navigation */
+    text-decoration: none;
+    color: white;
+    padding: 0.5rem 0;
+}
+
+.navbar-item:hover {
+    text-decoration: underline;
+}
+
+.navbar-actions {
+    display: flex;
+    align-items: center; /* Pour aligner verticalement les éléments à l'intérieur */
+    gap: 30px; /* Espacement entre les éléments, ajustez selon besoin */
+}
+
+.navbar-actions .btn {
+    background-color: #FFF; /* Couleur de fond pour le bouton d'action */
+    color: black;
+    padding: 0.5rem 1rem;
+    border-color: #0A66BD;
+    cursor: pointer;
+}
+
+.navbar-actions .btn-primary {
+    background-color: #D0E5FA; /* Couleur de fond pour le bouton primaire */
+    border-radius: 10px;
+}
+
+.navbar-actions .btn:hover {
+    opacity: 1;
+}
+
+.profilLogo img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    /* margin-right: 10px; Vous pouvez supprimer cette marge si vous utilisez gap dans .navbar-actions */
+}
+/* Dans navbarStyle.css */
+.profilLogo {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.rotate-icon {
+    transform: rotate(180deg); /* Tourne l'icône de 180 degrés */
+    transition: transform 0.3s ease; /* Animation fluide de la rotation */
+}
+
+/* Style pour le conteneur du menu dépliable */
+.dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f9f9; /* Couleur de fond légère */
+    border: 1px solid #28477C; /* Bordure du menu */
+    border-radius: 8px;
+    width: 200px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Ombre pour un effet de profondeur */
+    position: absolute;
+    right: 10px;
+    top: 60px;
+    margin-top: 10px;
+}
+
+/* Style pour les boutons transparents */
+.btn-transparent {
+    background-color: transparent; /* Fond transparent */
+    border: none;
+    color: #28477C; /* Couleur du texte pour correspondre à la palette */
+    padding: 20px;
+    margin: 5px 0;
+    width: 100%;
+    text-align: left; /* Texte aligné à gauche */
+    cursor: pointer;
+}
+
+.btn-transparent:hover {
+    background-color: #e8e8e8; /* Légère couleur de fond au survol pour feedback */
+}
+
+/* Style pour les diviseurs */
+.divider {
+    height: 1px;
+    background-color: #d1d1d1; /* Couleur du diviseur */
+    margin: 5px 0;
+}
+

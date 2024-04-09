@@ -1,0 +1,29 @@
+.trip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd; /* Ligne de séparation entre les éléments */
+}
+
+.trip-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.driver-info {
+    display: flex;
+    align-items: center;
+}
+
+.driver-info img {
+    width: 40px; /* Taille de l'image du profil */
+    height: 40px;
+    border-radius: 50%; /* Pour rendre l'image ronde */
+    margin-right: 0.5rem;
+}
+
+.price {
+    font-weight: bold;
+    font-size: 1.2rem;
+}

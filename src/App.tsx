@@ -3,6 +3,7 @@ import './App.css';
 import AppRoute from "./route/appRoute";
 import { BrowserRouter as Router } from "react-router-dom";
 
+
 function App() {
   return (
       <Router>

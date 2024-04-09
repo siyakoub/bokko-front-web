@@ -1,0 +1,330 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.app-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Commence avec une colonne pour les petits écrans */
+    grid-template-areas:
+    "search-filter"
+    "results";
+    height: auto; /* La hauteur s'adapte au contenu */
+    gap: 20px; /* Espacement entre les zones de grille pour la respiration */
+}
+
+/* Requête média pour les écrans jusqu'à 390px de large */
+@media (max-width: 390px) {
+    .app-container {
+        padding: 5px; /* Réduit le padding pour maximiser l'espace disponible */
+        gap: 10px; /* Diminue l'espacement entre les éléments pour un look plus compact */
+    }
+
+    /* Réduisez la taille des éléments de formulaire, boutons, etc., si nécessaire */
+    .search-form input,
+    .search-form button,
+    .filter-component,
+    .result-item {
+        padding: 8px; /* Ajustement du padding pour les éléments interactifs */
+        font-size: 14px; /* Taille de police plus petite pour économiser de l'espace */
+    }
+
+    /* Ajustements supplémentaires pour les images ou autres composants qui pourraient bénéficier d'une mise à l'échelle */
+    .profilLogo img {
+        width: 40px; /* Réduit la taille de l'image de profil pour les petits écrans */
+        height: 40px;
+    }
+
+    /* Si votre navbar ou d'autres éléments ont besoin d'ajustements */
+    .navbar {
+        padding: 0.25rem 0.5rem; /* Réduit le padding de la barre de navigation */
+    }
+
+    .navbar-actions .btn,
+    .navbar-actions .dropdown-menu {
+        font-size: 12px; /* Taille de police réduite pour les actions de la navbar et le menu */
+    }
+}
+
+/* Smartphones et petits appareils */
+@media only screen and (min-width: 375px) and (max-width: 667px),
+only screen and (min-width: 390px) and (max-width: 844px),
+only screen and (min-width: 414px) and (max-width: 896px),
+only screen and (min-width: 412px) and (max-width: 914px) {
+    .app-container {
+        grid-template-columns: 1fr; /* Une colonne pour les petits appareils */
+        padding: 10px;
+        gap: 15px;
+    }
+}
+
+/* Tablettes et appareils de taille moyenne */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .app-container {
+        grid-template-columns: 250px 1fr; /* Plus d'espace pour le filtre sur les tablettes */
+        gap: 20px;
+    }
+}
+
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+
+/* Ecrans d'ordinateur de taille moyenne */
+@media only screen and (min-width: 1280px) and (max-width: 800px) {
+    .app-container {
+        grid-template-columns: 300px 1fr; /* Adaptation pour les écrans d'ordinateur */
+        gap: 25px;
+    }
+}
+
+/* Ajustements additionnels pour d'autres dimensions ou orientations spécifiques si nécessaire */
+
+
+/* Petits écrans, typiquement téléphones en mode portrait */
+@media (min-width: 480px) {
+    .app-container {
+        grid-template-columns: 1fr; /* Continue à utiliser une seule colonne */
+        grid-template-rows: auto auto; /* Assurez-vous que les hauteurs sont ajustées automatiquement au contenu */
+        gap: 20px; /* Augmente légèrement l'espacement pour une meilleure lisibilité */
+        padding: 10px; /* Ajoute un peu de padding autour du conteneur pour éviter que le contenu touche les bords de l'écran */
+    }
+}
+
+
+/* Tablettes en mode portrait et écrans plus larges */
+@media (min-width: 768px) {
+    .app-container {
+        grid-template-columns: 250px 1fr; /* Ajustement pour plus d'espace pour le filtre */
+        grid-template-areas: "search-filter results";
+        height: 100vh; /* Pleine hauteur pour utiliser tout l'espace d'affichage */
+    }
+}
+
+/* Grands écrans, tels que tablettes en mode paysage et ordinateurs portables */
+@media (min-width: 992px) {
+    .app-container {
+        grid-template-columns: 300px 1fr; /* Plus d'espace pour le filtre */
+    }
+}
+
+/* Très grands écrans, tels que les moniteurs de bureau */
+@media (min-width: 1200px) {
+    .app-container {
+        grid-template-columns: 350px 1fr; /* Maximiser l'utilisation de l'espace disponible */
+    }
+}
+
+/* Extra larges écrans, pour les moniteurs de haute résolution */
+@media (min-width: 1600px) {
+    .app-container {
+        grid-template-columns: 400px 1fr; /* Encore plus d'espace pour le filtre, optimisé pour les grands écrans */
+    }
+}
+
+
+.navbar {
+    grid-area: navbar;
+}
+
+.search-filter-container {
+    grid-area: search-filter;
+    display: flex;
+    flex-direction: column; /* Les composants de recherche et de filtre seront empilés verticalement */
+}
+
+/* Importez ici le reste de votre CSS pour les composants individuels */
+
+
+@keyframes slideshow {
+    0% { background-image: url('../assets/img/img4.jpg'); }
+    25% { background-image: url('../assets/img/img5.jpg'); }
+    50% { background-image: url('../assets/img/img6.jpg'); }
+    75% { background-image: url('../assets/img/img7.jpg'); }
+    100% { background-image: url('../assets/img/img4.jpg'); } /* Retour à la première image */
+}
+
+.app-header {
+    padding: 10px;
+    color: white;
+    height: 200px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    animation-name: slideshow;
+    animation-duration: 20s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.app-header::before {
+    content: ""; /* Nécessaire pour que le pseudo-élément s'affiche */
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.5); /* Couleur de fond semi-transparente */
+    mix-blend-mode: multiply; /* Assure que l'image de fond est affectée par la couleur semi-transparente */
+    pointer-events: none; /* Permet les clics à travers la couche semi-transparente */
+}
+
+
+/* Petits écrans, dispositifs mobiles (moins de 768px de large) */
+@media (max-width: 767px) {
+    .app-header {
+        height: 300px; /* Hauteur réduite pour les petits écrans */
+        background-size: auto 100%; /* Ajuster la hauteur de l'image pour remplir l'espace */
+    }
+}
+
+/* Tablettes en orientation portrait (entre 768px et 991px de large) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .app-header {
+        height: 400px; /* Hauteur intermédiaire pour les tablettes */
+    }
+}
+
+/* Grandes tablettes et petits ordinateurs portables (entre 992px et 1199px de large) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .app-header {
+        height: 500px; /* Hauteur plus grande pour les grands appareils */
+    }
+}
+
+/* Grands écrans et ordinateurs de bureau (1200px de large et plus) */
+@media (min-width: 1200px) {
+    .app-header {
+        height: 600px; /* Hauteur maximale pour les grands écrans */
+    }
+}
+
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 100px; /* Ajustez selon vos besoins */
+    margin-right: 10px;
+}
+
+.search-bar-container {
+    display: flex;
+    justify-content: center; /* Centrer les éléments dans le conteneur */
+    align-items: center;
+    padding: 50px; /* Ajoutez un padding approprié */
+    background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent pour la barre de recherche */
+}
+
+.search-form {
+    display: flex;
+    width: 100%; /* Utilisez 100% pour occuper toute la largeur du conteneur */
+    margin-top: 10px;
+    /* Autres styles */
+}
+
+/* Vous pouvez ajuster la taille des inputs et boutons ici ou dans les médias queries si nécessaire */
+.search-form input,
+.search-form button {
+    flex: 1; /* Permet aux éléments du formulaire de grandir et de prendre l'espace disponible */
+    /* Autres styles */
+}
+
+/* Ajoutez des médias queries si nécessaire pour gérer le responsive design */
+/* Médias queries pour ajuster la taille des éléments sur les appareils plus petits */
+@media (max-width: 768px) {
+    .search-bar-container {
+        padding: 10px; /* Réduire le padding sur les petits écrans */
+    }
+
+    .search-form {
+        flex-direction: column; /* Empiler les éléments verticalement */
+        width: auto; /* Permettre au formulaire de s'ajuster à la taille du conteneur */
+    }
+
+    .search-form input,
+    .search-form button {
+        width: 100%; /* Sur les petits écrans, occupez toute la largeur */
+    }
+}
+
+.results-component {
+    grid-area: results;
+    overflow-y: auto; /* Permettre le défilement si le contenu dépasse la hauteur de la fenêtre */
+}
+
+/* Importez ici le reste de votre CSS pour les composants individuels */
+.con {
+    display: grid;
+    gap: 20px;
+    padding: 20px;
+}
+
+.cont {
+    display: grid;
+    gap: 20px;
+    padding: 20px;
+    background: #FFFFFF;
+    color: #cccccc;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fadeInUpAnimation {
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.footer-container {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    /* Autres styles pour votre footer ici (couleurs, padding, etc.) */
+}
+
+.app-header h1 {
+    margin-bottom: 0.5em;
+    font-size: 2.5rem;
+}
+
+.app-header p {
+    font-size: 1.2rem;
+    width: 80%;
+    margin: auto;
+}
+
+/* Search and filter section */
+.search-section {
+
+}

@@ -104,11 +104,33 @@ export async function deleteLastActifVehicule(token: string, email: string): Pro
         }
     });
     if (response.status === 404) {
-        throw new Error("Error lors de la suppression...");
+        throw new Error("Erreur lors de la suppression...");
     } else if (!response.ok) {
         throw new Error("Une erreur est survenue lors de la suppression du vehicule...");
     } else {
         return true;
+    }
+}
+
+export async function getAllByDriver(token: string, email: string) : Promise<Vehicule[]> {
+    const response = await fetch(baseUrl + "/?email=" + email, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    });
+    if (response.status == 404) {
+        throw new Error("Erreur lors de la récupération...");
+    } else if (!response.ok) {
+        throw new Error("Une erreur est survenue lors de la récupération des vehicule du conducteur...")
+    } else {
+        const data = await response.json();
+        if (data['hasError'] === false) {
+            return data['content'] as Vehicule[];
+        } else {
+            throw new Error(data['errorMessage']);
+        }
     }
 }
 

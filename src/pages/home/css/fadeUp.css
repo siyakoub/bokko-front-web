@@ -1,0 +1,43 @@
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fadeInUpAnimation {
+    opacity: 0; /* Démarrez invisible */
+    transform: translateY(20px); /* Démarrez plus bas */
+    visibility: hidden; /* Cachez jusqu'à l'animation */
+}
+
+.animate { /* Classe ajoutée pour animer */
+    animation: fadeInUp 2s ease-out forwards;
+    visibility: visible; /* Assurez que l'élément devient visible avec l'animation */
+}
+
+@keyframes fadeInDownUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fadeInDownUpAnimation {
+    opacity: 0;
+    transform: translateY(20px);
+    visibility: hidden;
+}
+
+.animate-downup {
+    animation: fadeInDownUp 2s ease-out forwards;
+    visibility: visible;
+}
