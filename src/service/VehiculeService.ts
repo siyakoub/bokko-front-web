@@ -113,7 +113,7 @@ export async function deleteLastActifVehicule(token: string, email: string): Pro
 }
 
 export async function getAllByDriver(token: string, email: string) : Promise<Vehicule[]> {
-    const response = await fetch(baseUrl + "/?email=" + email, {
+    const response = await fetch(baseUrl + "/bydriver?email=" + email, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -126,6 +126,7 @@ export async function getAllByDriver(token: string, email: string) : Promise<Veh
         throw new Error("Une erreur est survenue lors de la récupération des vehicule du conducteur...")
     } else {
         const data = await response.json();
+        console.log(data);
         if (data['hasError'] === false) {
             return data['content'] as Vehicule[];
         } else {

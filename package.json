@@ -22,6 +22,7 @@
     "@types/react-dom": "^18.2.21",
     "bootstrap": "^5.3.3",
     "date-fns": "^2.30.0",
+    "dayjs": "^1.11.10",
     "evergreen-ui": "^7.1.9",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",

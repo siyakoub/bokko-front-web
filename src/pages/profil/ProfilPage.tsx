@@ -27,22 +27,51 @@ import { get as getProfil } from '../../service/ProfilService';
 import { update as updateProfil } from '../../service/ProfilService';
 import {Profil} from "../../interface/ProfilInterface/Profil";
 import { Vehicule } from "../../interface/VehiculeInterface/Vehicule";
+import { create as createVehicule } from '../../service/VehiculeService';
 import { getAllByDriver } from "../../service/VehiculeService";
-import {CircularProgress} from "@mui/joy";
+import {CircularProgress, DialogContent, DialogTitle, Modal, ModalDialog} from "@mui/joy";
 import {User} from "../../interface/UserInterface/User";
 import {AddUser} from "../../interface/UserInterface/AddUser";
 import {UpdateProfil} from "../../interface/ProfilInterface/UpdateProfil";
 import Snackbar, { SnackbarProps } from '@mui/joy/Snackbar';
+import {Add} from "@mui/icons-material";
+import {
+    Paper,
+    styled,
+    Table,
+    TableBody,
+    TableCell,
+    tableCellClasses,
+    TableContainer,
+    TableHead,
+    TableRow
+} from "@mui/material";
+import {AddVehicule} from "../../interface/VehiculeInterface/AddVehicule";
+import {blue} from "@mui/material/colors";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: blue["200"],
+        color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));
+
 
 const ProfilPage: React.FC = () => {
     const [imageFile, setImageFile] = useState("");
     const [loading, setLoading] = useState(true);
     const [open, setOpen] = React.useState(false);
+    const [open2, setOpen2] = React.useState<boolean>(false);
     const [variant, setVariant] = React.useState<SnackbarProps['variant']>('soft');
     const [color, setColor] = React.useState<SnackbarProps['color']>('success');
     const [error, setError] = useState('');
     const [profil, setProfil] = useState<Profil>();
-    const [vehicules, setVehicules] = useState<Vehicule[]>();
+    const [vehicules, setVehicules] = useState<Vehicule[]>([]);
     const navigate = useNavigate();
     const userInfoString = localStorage.getItem('userInfo');
     const userInfo = userInfoString ? JSON.parse(userInfoString): null;
@@ -60,6 +89,36 @@ const ProfilPage: React.FC = () => {
         }
     };
 
+    const handleSubmitVehicule = async (event: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined; }) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const form: AddVehicule = {
+            userDTO: {
+                name: String(userInfo.name),
+                firstName: String(userInfo.firstName),
+                email: String(userInfo.email),
+                phoneNumber: String(userInfo.phoneNumber),
+                statut: String(userInfo.statut),
+                id: Number(localStorage.getItem('idUser'))
+            },
+            marque: String(data.get('marque')),
+            modele: String(data.get('modele')),
+            couleur: String(data.get('couleur')),
+            immatriculation: String(data.get('immatri')),
+            annee: Number(data.get('annee')),
+            used: 1
+        };
+        console.log(userInfo.id);
+        try {
+            const response = await createVehicule(String(tokenIdentif), form);
+            if (response) {
+                window.location.reload();
+            }
+        } catch (e) {
+            console.log('Error during adding...' + e);
+        }
+    }
+
     const handleSubmit = async (event: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined; }) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -76,10 +135,7 @@ const ProfilPage: React.FC = () => {
         try {
             const response = await updateProfil(String(tokenIdentif), userInfo.email, form);
             if (response) {
-                setTimeout(() => {
-                    setOpen(true);
-                }, 5000);
-                setOpen(false);
+                setOpen(true);
                 window.location.reload();
             } else {
                 console.log("Une erreur est survenue...");
@@ -100,7 +156,7 @@ const ProfilPage: React.FC = () => {
                     const response = await getProfil(tokenIdentif, userInfo.email);
                     setProfil(response);
                 } catch (e) {
-                    console.log("Une erreur est survenue lors de la récupération des données du profil...");
+                    console.log("Error during fetching..." + e);
                 } finally {
                     setLoading(false);
                 }
@@ -116,7 +172,7 @@ const ProfilPage: React.FC = () => {
                     const response = await getAllByDriver(tokenIdentif, userInfo.email);
                     setVehicules(response);
                 } catch (e) {
-                    console.log("Une erreur est survenue...");
+                    console.log("Error during fetching..." + e);
                 }
             }
         }
@@ -152,7 +208,7 @@ const ProfilPage: React.FC = () => {
     if (loading) {
         return (
             <div className="spinner-container">
-                <div className="loader"/>
+                <CircularProgress variant="outlined" />
             </div>
         );
     }
@@ -278,10 +334,10 @@ const ProfilPage: React.FC = () => {
                                 </Stack>
                                 <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
                                     <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-                                        <Button size="sm" type="reset" variant="outlined" color="neutral">
+                                        <Button size="sm" type="reset" variant="soft" color="neutral">
                                             Cancel
                                         </Button>
-                                        <Button size="sm" type="submit" variant="solid">
+                                        <Button size="sm" type="submit" variant="soft" color="primary">
                                             Save
                                         </Button>
                                         <Snackbar
@@ -290,6 +346,7 @@ const ProfilPage: React.FC = () => {
                                             size="lg"
                                             variant={variant}
                                             color={color}
+                                            onClose={() => setOpen(false)}
                                         >
                                             Modification effectué avec succès !
                                         </Snackbar>
@@ -318,10 +375,10 @@ const ProfilPage: React.FC = () => {
                                 </Stack>
                                 <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
                                     <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
-                                        <Button size="sm" type="reset" variant="outlined" color="neutral">
+                                        <Button size="sm" type="reset" variant="soft" color="neutral">
                                             Cancel
                                         </Button>
-                                        <Button size="sm" type="submit" variant="solid">
+                                        <Button size="sm" type="submit" variant="soft" color="primary">
                                             Save
                                         </Button>
                                     </CardActions>
@@ -334,8 +391,119 @@ const ProfilPage: React.FC = () => {
                             </Box>
                             <Divider />
                             <Stack spacing={2} sx={{ my: 1 }}>
-
+                                <TableContainer component={Paper}>
+                                    <Table sx={{ minWidth: 650 }} aria-label="vehicule table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <StyledTableCell>Marque</StyledTableCell>
+                                                <StyledTableCell>Modèle</StyledTableCell>
+                                                <StyledTableCell>Couleur</StyledTableCell>
+                                                <StyledTableCell>Immatriculation</StyledTableCell>
+                                                <StyledTableCell>Année</StyledTableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {Array.isArray(vehicules) && vehicules.map((vehicule) => (
+                                                <TableRow
+                                                    key={vehicule.id}
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell component="th" scope="row">
+                                                        {vehicule.marque}
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row">
+                                                        {vehicule.modele}
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row">
+                                                        {vehicule.couleur}
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row">
+                                                        {vehicule.immatriculation}
+                                                    </TableCell>
+                                                    <TableCell component="th" scope="row">
+                                                        {vehicule.annee}
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
                             </Stack>
+                            <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
+                                <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
+                                    <Button size="lg" variant="soft" color="primary" startDecorator={<Add />}
+                                            onClick={() => setOpen2(true)}>
+                                        Ajouter
+                                    </Button>
+                                    <Modal open={open2} onClose={() => setOpen2(false)}>
+                                        <form onSubmit={handleSubmitVehicule}>
+                                            <ModalDialog
+                                                aria-labelledby="nested-modal-title"
+                                                aria-describedby="nested-modal-description"
+                                                sx={(theme) => ({
+                                                    [theme.breakpoints.only('xs')]: {
+                                                        top: 'unset',
+                                                        bottom: 0,
+                                                        left: 0,
+                                                        right: 0,
+                                                        borderRadius: 0,
+                                                        transform: 'none',
+                                                        maxWidth: 'unset',
+                                                    },
+                                                })}
+                                            >
+                                                <Typography id="nested-modal-title" level="h2">
+                                                    Nouveau véhicule
+                                                </Typography>
+                                                <Typography id="nested-modal-description" textColor="text.tertiary">
+                                                    Veuillez entrer les informations de votre nouveau véhicule pour vos trajets
+                                                </Typography>
+                                                <Stack spacing={2}>
+                                                    <FormControl>
+                                                        <FormLabel>Marque</FormLabel>
+                                                        <Input id="marque" name="marque" autoFocus required />
+                                                    </FormControl>
+                                                    <FormControl>
+                                                        <FormLabel>Modèle</FormLabel>
+                                                        <Input id="modele" name="modele" required />
+                                                    </FormControl>
+                                                    <FormControl>
+                                                        <FormLabel>Couleur</FormLabel>
+                                                        <Input id="couleur" name="couleur" required />
+                                                    </FormControl>
+                                                    <FormControl>
+                                                        <FormLabel>Immatriculation</FormLabel>
+                                                        <Input id="immatri" name="immatri" required />
+                                                    </FormControl>
+                                                    <FormControl>
+                                                        <FormLabel>Année</FormLabel>
+                                                        <Input type="tel" id="annee" name="annee" required />
+                                                    </FormControl>
+                                                </Stack>
+                                                <Box
+                                                    sx={{
+                                                        mt: 1,
+                                                        display: 'flex',
+                                                        gap: 1,
+                                                        flexDirection: { xs: 'column', sm: 'row-reverse' },
+                                                    }}
+                                                >
+                                                    <Button variant="soft" color="primary" type="submit">
+                                                        Enregistrer
+                                                    </Button>
+                                                    <Button
+                                                        variant="soft"
+                                                        color="neutral"
+                                                        onClick={() => setOpen2(false)}
+                                                    >
+                                                        Annuler
+                                                    </Button>
+                                                </Box>
+                                            </ModalDialog>
+                                        </form>
+                                    </Modal>
+                                </CardActions>
+                            </CardOverflow>
                         </Card>
                     </Stack>
                 </Box>

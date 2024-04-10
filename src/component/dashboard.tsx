@@ -17,6 +17,7 @@ import IconButton, {IconButtonProps} from "@mui/joy/IconButton";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import ColorSchemeToggle from "../pages/home/component/ColorSchemeToggle/ColorSchemeToggle";
+import {CircularProgress} from "@mui/joy";
 
 const DashBoard = () => {
     const [trajets, setTrajets] = useState<Trajet[]>([]);
@@ -32,9 +33,6 @@ const DashBoard = () => {
     const page = 1; // pour la pagination
     const size = 1; // nombre d'éléments par page
 
-
-
-    // Simulons un token d'authentification
 
     useEffect(() => {
         const fetchTrajetsAndProfils = async () => {
@@ -55,7 +53,6 @@ const DashBoard = () => {
                 }
             }
         };
-
         fetchTrajetsAndProfils();
     }, [page, size]); // Exécutez useEffect lorsque ces valeurs changent
 
@@ -63,7 +60,7 @@ const DashBoard = () => {
     if (loading) {
         return (
             <div className="spinner-container">
-                <div className="loader"/>
+                <CircularProgress variant="outlined"/>
             </div>
         );
     }

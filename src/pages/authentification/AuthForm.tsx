@@ -82,6 +82,7 @@ export default function SignIn() {
                 };
                 localStorage.setItem('userInfo', JSON.stringify(userInfo));
                 localStorage.setItem('token', response['token']);
+                localStorage.setItem('idUser', String(response['id']));
                 navigate('/dashboard');
             }
         } catch (e) {
