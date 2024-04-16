@@ -25,6 +25,28 @@ export async function get(token: string, email: string): Promise<Trajet> {
     }
 }
 
+export async function getAllTrajetByDriver(token: string, email: string) : Promise<Trajet[]> {
+    const response = await fetch(baseUrl + "/allbydriver?email=" + email, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    });
+    if (response.status === 404) {
+        throw new Error("Aucun trajet n'as été trouvé...");
+    } else if (!response.ok) {
+        throw new Error("Une erreur est survenue lors de la récupération des trajets...");
+    } else {
+        const data = await response.json();
+        if (data['hasError'] === false) {
+            return data['content'] as Trajet[];
+        } else{
+            throw new Error(data["errorMessage"]);
+        }
+    }
+}
+
 export async function getAll(token: string, page: number, size: number) : Promise<Trajet[]> {
     const response = await fetch(baseUrl + "/all?page="+ page.toString() +"&size=" + size.toString(), {
         method: 'GET',
@@ -114,3 +136,48 @@ export async function deleteTrajet(token: string, email: string): Promise<Trajet
         }
     }
 }
+
+export async function deleteTrajetById(token: string, email: string, idTrajet: number) : Promise<Trajet> {
+    const response = await fetch(baseUrl + '/?email=' + email + "&id=" + idTrajet.toString(), {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    });
+    if (response.status === 404) {
+        throw new Error('Aucun trajet trouvé...');
+    } else if (!response.ok) {
+        throw new Error('Une erreur est survenue lors de la récupération du trajet...');
+    } else {
+        const data = await response.json();
+        if (data['hasError'] === false) {
+            return data['content'] as Trajet;
+        } else {
+            throw new Error(data['errorMessage']);
+        }
+    }
+}
+
+export async function getById(token: string, email: string, idTrajet: number) : Promise<Trajet> {
+    const response = await fetch(baseUrl + '/?email=' + email + '&idTrajet=' + idTrajet.toString(), {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    });
+    if (response.status === 404) {
+        throw new Error('Aucun trajet trouvé...');
+    } else if (!response.ok) {
+        throw new Error('Une erreur est surenue lors de la récupération du trajet...');
+    } else {
+        const data = await response.json();
+        if (data['hasError'] === false){
+            return data['content'] as Trajet;
+        } else {
+            throw new Error(data['errorMessage']);
+        }
+    }
+}
+

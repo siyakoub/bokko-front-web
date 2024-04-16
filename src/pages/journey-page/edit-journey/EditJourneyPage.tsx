@@ -1,51 +1,51 @@
-import React, {useState} from "react";
-import NavBar from "../../component/navBar/NavBar";
-import './css/fadeUp.css';
-import './css/spinner.css';
+import React, {useState} from 'react';
+import NavBar from "../../../component/navBar/NavBar";
 import Box from "@mui/joy/Box";
 import Stack from "@mui/joy/Stack";
 import Card from "@mui/joy/Card";
 import Typography from "@mui/joy/Typography";
 import Divider from "@mui/joy/Divider";
-import AspectRatio from "@mui/joy/AspectRatio";
-import IconButton from "@mui/joy/IconButton";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import FormLabel from "@mui/joy/FormLabel";
 import FormControl from "@mui/joy/FormControl";
 import Input from "@mui/joy/Input";
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import CardOverflow from "@mui/joy/CardOverflow";
 import CardActions from "@mui/joy/CardActions";
 import Button from "@mui/joy/Button";
-import Textarea from "@mui/joy/Textarea";
-import FormHelperText from "@mui/joy/FormHelperText";
-import Footer from "../../component/footer/Footer";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
-import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
-import { create as createTrajet } from '../../service/TrajetService';
-import {Trajet} from "../../interface/TrajetInterface/Trajet";
-import {AddVehicule} from "../../interface/VehiculeInterface/AddVehicule";
-import {useNavigate} from "react-router-dom";
-import {AddTrajet} from "../../interface/TrajetInterface/AddTrajet";
+import Footer from "../../../component/footer/Footer";
+import {Trajet} from "../../../interface/TrajetInterface/Trajet";
+import {useLocation, useNavigate} from "react-router-dom";
+import {UpdateTrajet} from "../../../interface/TrajetInterface/UpdateTrajet";
+import dayjs, {Dayjs} from "dayjs";
 
-const CreateTrajetPage: React.FC = () => {
 
-    const [trajet, setTrajet] = useState<Trajet>();
-    const navigate = useNavigate();
+const EditJourneyPage: React.FC = () => {
+    const location = useLocation();
+    const [trajet, setTrajet] = useState<Trajet>(
+        location.state?.trajet || {}
+    );
     const userInfoString = localStorage.getItem('userInfo');
     const userInfo = userInfoString ? JSON.parse(userInfoString): null;
     const tokenIdentif = localStorage.getItem('token');
+    const navigate = useNavigate();
+    const [dateHeureDepart, setDateHeureDepart] = useState<Dayjs | null>(trajet.dateHeureDepart ? dayjs(trajet.dateHeureDepart) : dayjs());
 
-    const handleSubmit = async (event: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined; }) => {
+    const handleCancel = () => {
+        navigate('/my-journeys');
+    }
+
+    const handleSubmit = (event: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined; }) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-
-        // Convertir la chaîne en un objet Date
         const date = new Date(String(data.get("dateHeure")));
         const padTo2Digits = (num: { toString: () => string; }) => num.toString().padStart(2, '0');
         const formattedDate = `${date.getFullYear()}-${padTo2Digits(date.getMonth() + 1)}-${padTo2Digits(date.getDate())} ${padTo2Digits(date.getHours())}:${padTo2Digits(date.getMinutes())}:00`;
-        const form : AddTrajet = {
+        const isValidDate = (dateStr: string) => {
+            return !isNaN(new Date(dateStr).getTime());
+        };
+        let dateToUse = isValidDate(formattedDate) ? String(formattedDate) : String(trajet?.dateHeureDepart);
+        const form : UpdateTrajet = {
             userDTO: {
                 name: String(userInfo.name),
                 firstName: String(userInfo.firstName),
@@ -54,27 +54,19 @@ const CreateTrajetPage: React.FC = () => {
                 statut: String(userInfo.statut),
                 id: Number(localStorage.getItem("idUser"))
             },
-            depart: String(data.get("depart")),
-            arrivee: String(data.get("arrivee")),
-            dateHeureDepart: String(formattedDate),
-            nbPlaces: Number(data.get("nbPlaces")),
-            prix: Number(data.get("price")),
-            statut: "à venir"
-
+            depart: String(data.get("depart")) || String(trajet?.depart),
+            arrivee: String(data.get("arrivee")) || String(trajet?.arrivee),
+            dateHeureDepart: String(dateToUse),
+            nbPlaces: Number(data.get("nbPlaces")) || Number(trajet?.nbPlaces),
+            prix: Number(data.get("price")) || Number(trajet?.prix),
+            statut: trajet?.statut || String(trajet?.statut),
+            id: Number(trajet?.id)
         };
-        try {
-            const response = await createTrajet(String(tokenIdentif), form);
-            if (response) {
-                navigate('/dashboard');
-            } else {
-                console.log("Erreur lors de la requête...")
-            }
-        } catch (e) {
-            console.log('Error during adding...' + e)
-        }
+        console.log(form);
     }
 
-    return (
+
+    return(
         <>
             <NavBar/>
             <div>
@@ -92,7 +84,7 @@ const CreateTrajetPage: React.FC = () => {
                         >
                             <Card>
                                 <Box sx={{mb: 1}}>
-                                    <Typography level="h2">Publier un nouveau trajet</Typography>
+                                    <Typography level="h2">Modifier un trajet</Typography>
                                 </Box>
                                 <Divider/>
                                 <Stack spacing={2} sx={{ flexGrow: 1 }}>
@@ -101,39 +93,43 @@ const CreateTrajetPage: React.FC = () => {
                                         <FormControl
                                             sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                                         >
-                                            <Input size="sm" id="depart" name="depart" placeholder="" required />
+                                            <Input size="sm" id="depart" name="depart" placeholder={trajet?.depart} />
                                         </FormControl>
                                         <FormLabel>Point d'arrivé</FormLabel>
                                         <FormControl
                                             sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                                         >
-                                            <Input size="sm" id="arrivee" name="arrivee" placeholder="" required />
+                                            <Input size="sm" id="arrivee" name="arrivee" placeholder={String(trajet?.nbPlaces)} />
                                         </FormControl>
                                         <FormLabel>Date et Heure de départ</FormLabel>
                                         <FormControl
                                             sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                                         >
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DateTimePicker name="dateHeure"/>
+                                                <DateTimePicker
+                                                    value={dateHeureDepart}
+                                                    onChange={(newValue: Dayjs | null) => setDateHeureDepart(newValue)}
+                                                    name="dateHeure"
+                                                />
                                             </LocalizationProvider>
                                         </FormControl>
                                         <FormLabel>Nombre de places disponible</FormLabel>
                                         <FormControl
                                             sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                                         >
-                                            <Input size="sm" type="tel" id="nbPlaces" name="nbPlaces" placeholder="" required/>
+                                            <Input size="sm" type="tel" id="nbPlaces" name="nbPlaces" placeholder={String(trajet?.nbPlaces)}/>
                                         </FormControl>
                                         <FormLabel>Prix</FormLabel>
                                         <FormControl
                                             sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                                         >
-                                            <Input size="sm" type="tel" id="price" name="price" placeholder="" required />
+                                            <Input size="sm" type="tel" id="price" name="price" placeholder={String(trajet?.prix)} />
                                         </FormControl>
                                     </Stack>
                                 </Stack>
                                 <CardOverflow sx={{borderTop: '1px solid', borderColor: 'divider'}}>
                                     <CardActions sx={{alignSelf: 'flex-end', pt: 2}}>
-                                        <Button size="sm" variant="soft" color="neutral">
+                                        <Button size="sm" variant="soft" color="neutral" onClick={handleCancel}>
                                             Cancel
                                         </Button>
                                         <Button size="sm" type="submit" variant="soft" color="primary">
@@ -151,6 +147,8 @@ const CreateTrajetPage: React.FC = () => {
             </div>
         </>
     );
+
 }
 
-export default CreateTrajetPage;
+
+export default EditJourneyPage;

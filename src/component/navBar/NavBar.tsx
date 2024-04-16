@@ -174,6 +174,10 @@ const Navbar: React.FC = () => {
         navigate('/dashboard');
     }
 
+    const handlejourneys = () => {
+        navigate('/my-journeys');
+    }
+
     return (
         <nav className="navbar">
             <div onClick={handleMenu}>
@@ -228,7 +232,7 @@ const Navbar: React.FC = () => {
                                     </ListItemDecorator>
                                     Reservations
                                 </MenuItem>
-                                <MenuItem orientation="vertical" onClick={handleDashboard}>
+                                <MenuItem orientation="vertical" onClick={handlejourneys}>
                                     <ListItemDecorator>
                                         <Avatar>T</Avatar>
                                     </ListItemDecorator>

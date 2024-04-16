@@ -8,18 +8,22 @@ import ReservationPage from "../pages/reservation/ReservationPage";
 import CreateTrajetPage from "../pages/new-journey/CreateTrajetPage";
 import ProfilPage from "../pages/profil/ProfilPage";
 import HomePage from "../pages/home/HomePage";
+import JourneyPage from "../pages/journey-page/JourneyPage";
+import EditJourneyPage from "../pages/journey-page/edit-journey/EditJourneyPage";
 
 const AppRoute: React.FC = () => {
     return (
         <Routes>
-            <Route path="/" element={<HomePage/>}/>
-            <Route path="/login" element={<AuthForm/>} />
-            <Route path="/register" element={<RegisterForm/>} />
-            <Route path="/forgot-password" element={<ForgotPassword/>}/>
-            <Route path="/dashboard" element={<Dashboard/>} />
-            <Route path="/reservation" element={<ReservationPage/>} />
-            <Route path="/new-journey" element={<CreateTrajetPage/>} />
-            <Route path="/profil" element={<ProfilPage/>}/>
+            <Route path={"/"} element={<HomePage/>}/>
+            <Route path={"/login"} element={<AuthForm/>} />
+            <Route path={"/register"} element={<RegisterForm/>} />
+            <Route path={"/forgot-password"} element={<ForgotPassword/>}/>
+            <Route path={"/dashboard"}element={<Dashboard/>} />
+            <Route path={"/reservation"} element={<ReservationPage/>} />
+            <Route path={"/my-journeys"} element={<JourneyPage/>} />
+            <Route path={"/new-journey"} element={<CreateTrajetPage/>} />
+            <Route path={"/profil"} element={<ProfilPage/>}/>
+            <Route path={"/edit-journey"} element={<EditJourneyPage/>} />
         </Routes>
     );
 };

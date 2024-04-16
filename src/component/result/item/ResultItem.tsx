@@ -17,7 +17,7 @@ const ResultItem: React.FC<ResultItemProps> = ({ trajet, profil }) => {
     const navigate = useNavigate();
 
     const handleReservation = () => {
-        navigate('/reservation');
+        navigate('/reservation', { state: { trajet: trajet, profil: profil }});
     }
 
     return (

@@ -53,7 +53,7 @@ import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: blue["200"],
+        backgroundColor: blue["800"],
         color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
@@ -72,17 +72,19 @@ const ProfilPage: React.FC = () => {
     const [error, setError] = useState('');
     const [profil, setProfil] = useState<Profil>();
     const [vehicules, setVehicules] = useState<Vehicule[]>([]);
+    const [hasVehicule, setHasVehicule] = useState(false);
     const navigate = useNavigate();
     const userInfoString = localStorage.getItem('userInfo');
     const userInfo = userInfoString ? JSON.parse(userInfoString): null;
     const tokenIdentif = localStorage.getItem('token');
 
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+
+    handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files ? event.target.files[0] : null;
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                // Met à jour l'image de profil temporairement affichée
                 setImageFile(reader.result as string);
             };
             reader.readAsDataURL(file);
@@ -108,7 +110,6 @@ const ProfilPage: React.FC = () => {
             annee: Number(data.get('annee')),
             used: 1
         };
-        console.log(userInfo.id);
         try {
             const response = await createVehicule(String(tokenIdentif), form);
             if (response) {
@@ -170,7 +171,12 @@ const ProfilPage: React.FC = () => {
                 setLoading(true);
                 try{
                     const response = await getAllByDriver(tokenIdentif, userInfo.email);
-                    setVehicules(response);
+                    if (response) {
+                        setVehicules(response);
+                        setHasVehicule(true);
+                    } else {
+                        setHasVehicule(false);
+                    }
                 } catch (e) {
                     console.log("Error during fetching..." + e);
                 }
@@ -178,7 +184,7 @@ const ProfilPage: React.FC = () => {
         }
         fetchVehicule();
         fetchProfil();
-    }, []);
+    }, [navigate, tokenIdentif, userInfo.email]);
 
     const handleSubmitBio = async (event: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined; }) => {
         event.preventDefault();
@@ -226,7 +232,7 @@ const ProfilPage: React.FC = () => {
                         spacing={4}
                         sx={{
                             display: 'flex',
-                            maxWidth: '800px',
+                            maxWidth: '1000px',
                             mx: 'auto',
                             px: { xs: 2, md: 6 },
                             py: { xs: 2, md: 3 },
@@ -391,43 +397,45 @@ const ProfilPage: React.FC = () => {
                             </Box>
                             <Divider />
                             <Stack spacing={2} sx={{ my: 1 }}>
-                                <TableContainer component={Paper}>
-                                    <Table sx={{ minWidth: 650 }} aria-label="vehicule table">
-                                        <TableHead>
-                                            <TableRow>
-                                                <StyledTableCell>Marque</StyledTableCell>
-                                                <StyledTableCell>Modèle</StyledTableCell>
-                                                <StyledTableCell>Couleur</StyledTableCell>
-                                                <StyledTableCell>Immatriculation</StyledTableCell>
-                                                <StyledTableCell>Année</StyledTableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {Array.isArray(vehicules) && vehicules.map((vehicule) => (
-                                                <TableRow
-                                                    key={vehicule.id}
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell component="th" scope="row">
-                                                        {vehicule.marque}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        {vehicule.modele}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        {vehicule.couleur}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        {vehicule.immatriculation}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row">
-                                                        {vehicule.annee}
-                                                    </TableCell>
+                                {hasVehicule ? (
+                                    <TableContainer component={Paper}>
+                                        <Table sx={{ minWidth: 650 }} aria-label="vehicule table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <StyledTableCell>Marque</StyledTableCell>
+                                                    <StyledTableCell>Modèle</StyledTableCell>
+                                                    <StyledTableCell>Couleur</StyledTableCell>
+                                                    <StyledTableCell>Immatriculation</StyledTableCell>
+                                                    <StyledTableCell>Année</StyledTableCell>
                                                 </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
+                                            </TableHead>
+                                            <TableBody>
+                                                {Array.isArray(vehicules) && vehicules.map((vehicule) => (
+                                                    <TableRow
+                                                        key={vehicule.id}
+                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                    >
+                                                        <TableCell component="th" scope="row">
+                                                            {vehicule.marque}
+                                                        </TableCell>
+                                                        <TableCell component="th" scope="row">
+                                                            {vehicule.modele}
+                                                        </TableCell>
+                                                        <TableCell component="th" scope="row">
+                                                            {vehicule.couleur}
+                                                        </TableCell>
+                                                        <TableCell component="th" scope="row">
+                                                            {vehicule.immatriculation}
+                                                        </TableCell>
+                                                        <TableCell component="th" scope="row">
+                                                            {vehicule.annee}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                ) : <p>Aucun véhicule enregistré</p>}
                             </Stack>
                             <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
                                 <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>

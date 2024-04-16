@@ -1,8 +1,5 @@
-import {User} from "../UserInterface/User";
-import {AddUser} from "../UserInterface/AddUser";
-
-export interface AddTrajet {
-    userDTO: {
+export interface UpdateTrajet {
+    userDTO : {
         name: string,
         firstName: string,
         email: string,
@@ -15,5 +12,6 @@ export interface AddTrajet {
     dateHeureDepart: string,
     nbPlaces: number,
     prix: number,
-    statut: string
+    statut: string,
+    id: number
 }
