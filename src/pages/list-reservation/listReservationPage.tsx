@@ -1,11 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import NavBar from "../../component/navBar/NavBar";
-import Box from "@mui/joy/Box";
-import Typography from "@mui/joy/Typography";
-import Divider from "@mui/joy/Divider";
-import Stack from "@mui/joy/Stack";
-import './css/fadeUp.css';
-import './css/spinner.css';
+import {Trajet} from "../../interface/TrajetInterface/Trajet";
+import {useNavigate} from "react-router-dom";
 import {
     Fab,
     Paper,
@@ -18,24 +13,20 @@ import {
     TableHead,
     TableRow
 } from "@mui/material";
-import CardOverflow from "@mui/joy/CardOverflow";
-import CardActions from "@mui/joy/CardActions";
-import Button from "@mui/joy/Button";
-import {Add} from "@mui/icons-material";
-import {CircularProgress, Modal, ModalDialog} from "@mui/joy";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import Input from "@mui/joy/Input";
-import Card from "@mui/joy/Card";
 import {blue} from "@mui/material/colors";
-import {Trajet} from "../../interface/TrajetInterface/Trajet";
-import {useNavigate} from "react-router-dom";
-import { getAllTrajetByDriver } from "../../service/TrajetService";
-import {EditIcon} from "evergreen-ui";
-import { TrashIcon } from "evergreen-ui";
-import { deleteTrajetById } from "../../service/TrajetService";
+import Navbar from "../../component/navBar/NavBar";
+import Stack from "@mui/joy/Stack";
+import Card from "@mui/joy/Card";
+import Box from "@mui/joy/Box";
+import Typography from "@mui/joy/Typography";
+import Divider from "@mui/joy/Divider";
+import {deleteReservationById, getAllByUser} from "../../service/ReservationService";
+import {Reservation} from "../../interface/ReservationInterface/Reservation";
+import {CircularProgress} from "@mui/joy";
+import './css/spinner.css';
+import './css/fadeUp.css';
+import {EditIcon, TrashIcon} from "evergreen-ui";
 import Footer from "../../component/footer/Footer";
-
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -47,60 +38,45 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
 }));
 
-
-
-const JourneyPage: React.FC = () => {
-    const [trajets, setTrajets] = useState<Trajet[]>();
+const ListReservationPage: React.FC = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
     const userInfoString = localStorage.getItem('userInfo');
     const userInfo = userInfoString ? JSON.parse(userInfoString): null;
     const tokenIdentif = localStorage.getItem('token');
-    const [hasTrajet, setHasTrajet] = useState(false);
+    const [reservations, setReservations] = useState<Reservation[]>();
 
     useEffect(() => {
-        const fetchTrajet = async () => {
-            if (tokenIdentif === '' || tokenIdentif === null || tokenIdentif === undefined) {
-                navigate('/');
-            } else {
-                setLoading(true);
-                try {
-                    const response = await getAllTrajetByDriver(String(tokenIdentif), userInfo.email);
-                    if (response) {
-                        setTrajets(response);
-                        setHasTrajet(true);
-                    } else {
-                        setHasTrajet(false);
-                    }
-                } catch (e) {
-                    setHasTrajet(false);
+        const fetchReservation = async () => {
+            try {
+                const response = await getAllByUser(String(tokenIdentif), userInfo.email);
+                if (response || response != null) {
+                    setReservations(response);
                     setLoading(false);
-                    return;
+                } else {
+                    setError("Vous n'avez aucune réservation pour le moment.");
                 }
+            } catch (e) {
+                setError('Une erreur est survenue lors de la récupération des réservations');
+            } finally {
+                setLoading(false);
             }
         };
-        fetchTrajet();
-        setLoading(false);
-    }, [navigate, tokenIdentif, userInfo.email]);
+        fetchReservation();
+    }, [tokenIdentif, userInfo]);
 
-    // @ts-ignore
-    const handleSuppress = async (idTrajet: number) => {
+    const handleSuppress = async (idReservation: number) => {
         try {
-            const response = await deleteTrajetById(String(tokenIdentif), userInfo.email, idTrajet);
+            const response = await deleteReservationById(String(tokenIdentif), userInfo.email, idReservation);
             if (response) {
-                setTrajets(trajets?.filter(trajet => trajet.id !== idTrajet));
+                setReservations(reservations?.filter(reservation => reservation.id !== idReservation));
             } else {
-                throw new Error('Failed to delete the journey');
+                throw new Error('Failed to delete the booking');
             }
         } catch (e) {
             console.error("Erreur lors de la suppression du trajet", e);
             setError('Erreur lors de la suppression du trajet');
         }
-    };
-
-    const handleUpdateJourney = (trajet: Trajet) => {
-        navigate('/edit-journey', { state: { trajet: trajet } })
     }
 
     if (loading) {
@@ -111,9 +87,9 @@ const JourneyPage: React.FC = () => {
         );
     }
 
-    return (
+    return(
         <>
-            <NavBar/>
+            <Navbar/>
             <Box className="fadeInUpAnimation" sx={{flex: 1, width: '100%'}}>
                 <Stack
                     spacing={4}
@@ -127,11 +103,13 @@ const JourneyPage: React.FC = () => {
                 >
                     <Card>
                         <Box sx={{mb: 1}}>
-                            <Typography level="h2">Mes Trajets</Typography>
+                            <Typography level="h2">Mes Reservations</Typography>
                         </Box>
                         <Divider/>
                         <Stack spacing={2} sx={{my: 1}}>
-                            {hasTrajet ? (
+                            {error ? (
+                                <p>{error}</p>
+                            ) : (
                                 <TableContainer component={Paper}>
                                     <Table sx={{minWidth: 650}} aria-label="vehicule table">
                                         <TableHead>
@@ -139,43 +117,41 @@ const JourneyPage: React.FC = () => {
                                                 <StyledTableCell>Départ</StyledTableCell>
                                                 <StyledTableCell>Arrivé</StyledTableCell>
                                                 <StyledTableCell>Date départ</StyledTableCell>
-                                                <StyledTableCell>Nombres de places</StyledTableCell>
-                                                <StyledTableCell>Prix</StyledTableCell>
+                                                <StyledTableCell>Places réservés</StyledTableCell>
+                                                <StyledTableCell>Date de réservation</StyledTableCell>
                                                 <StyledTableCell>Statut</StyledTableCell>
                                                 <StyledTableCell>Actions</StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {Array.isArray(trajets) && trajets.map((trajet) => (
+                                            {Array.isArray(reservations) && reservations.map((reservation) => (
                                                 <TableRow
-                                                    key={trajet.id}
+                                                    key={reservation.id}
                                                     sx={{'&:last-child td, &:last-child th': {border: 0}}}
                                                 >
                                                     <TableCell component="th" scope="row">
-                                                        {trajet.depart}
+                                                        {reservation.trajetDTO.depart}
                                                     </TableCell>
                                                     <TableCell component="th" scope="row">
-                                                        {trajet.arrivee}
+                                                        {reservation.trajetDTO.arrivee}
                                                     </TableCell>
                                                     <TableCell component="th" scope="row">
-                                                        {trajet.dateHeureDepart}
+                                                        {reservation.trajetDTO.dateHeureDepart}
                                                     </TableCell>
                                                     <TableCell component="th" scope="row">
-                                                        {trajet.nbPlaces}
+                                                        {reservation.nbPlacesReserv}
                                                     </TableCell>
                                                     <TableCell component="th" scope="row">
-                                                        {trajet.prix}
+                                                        {reservation.dateReservation}
                                                     </TableCell>
                                                     <TableCell component="th" scope="row">
-                                                        {trajet.statut}
+                                                        {reservation.statut}
                                                     </TableCell>
                                                     <TableCell component="th" scope="row">
-                                                        <Fab size="small" color="primary" aria-label="edit"
-                                                             onClick={() => handleUpdateJourney(trajet)}>
-                                                            <EditIcon/>
-                                                        </Fab>
                                                         <Fab size="small" color="primary" aria-label="suppress"
-                                                             onClick={() => handleSuppress(trajet.id)}>
+                                                             onClick={() => {
+                                                                 handleSuppress(reservation.id)
+                                                             }}>
                                                             <TrashIcon/>
                                                         </Fab>
                                                     </TableCell>
@@ -184,7 +160,7 @@ const JourneyPage: React.FC = () => {
                                         </TableBody>
                                     </Table>
                                 </TableContainer>
-                            ) : <p>Aucun trajet disponible.</p>}
+                            )}
                         </Stack>
                     </Card>
                 </Stack>
@@ -197,6 +173,6 @@ const JourneyPage: React.FC = () => {
             </div>
         </>
     );
-}
+};
 
-export default JourneyPage;
+export default ListReservationPage;

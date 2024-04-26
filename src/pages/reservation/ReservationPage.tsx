@@ -31,6 +31,7 @@ import { get } from '../../service/VehiculeService';
 import {Vehicule} from "../../interface/VehiculeInterface/Vehicule";
 import {AddReservation} from "../../interface/ReservationInterface/addReservation";
 import {CircularProgress} from "@mui/joy";
+import { create } from '../../service/ReservationService';
 
 
 const ReservationPage: React.FC = () => {
@@ -73,15 +74,55 @@ const ReservationPage: React.FC = () => {
         }
     }, [location, navigate, reservationData.profil.userDTO.email, tokenIdentif]);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        const date = new Date(Date.now());
+        // Fonction pour ajouter un zéro devant les unités s'il le faut
+        const padTo2Digits = (num: number) => num.toString().padStart(2, '0');
+        // Formatter la date
+        const formattedDate = `${date.getFullYear()}-${padTo2Digits(date.getMonth() + 1)}-${padTo2Digits(date.getDate())} ${padTo2Digits(date.getHours())}:${padTo2Digits(date.getMinutes())}:${padTo2Digits(date.getSeconds())}`;
+        console.log(formattedDate);
         const reserv: AddReservation = {
-            trajetDTO: reservationData.trajet,
-            userDTO: reservationData.profil.userDTO,
+            trajetDTO: {
+                userDTO: {
+                    name: reservationData.profil.userDTO.name,
+                    firstName: reservationData.profil.userDTO.firstName,
+                    email: reservationData.profil.userDTO.email,
+                    phoneNumber: reservationData.profil.userDTO.phoneNumber,
+                    statut: reservationData.profil.userDTO.statut,
+                    id: reservationData.profil.userDTO.id
+                },
+                depart: reservationData.trajet.depart,
+                arrivee: reservationData.trajet.arrivee,
+                dateHeureDepart: reservationData.trajet.dateHeureDepart,
+                nbPlaces: reservationData.trajet.nbPlaces,
+                prix: reservationData.trajet.prix,
+                statut: reservationData.trajet.statut,
+                id: reservationData.trajet.id
+            },
+            userDTO: {
+                name: userInfo.name,
+                firstName: userInfo.firstName,
+                email: userInfo.email,
+                phoneNumber: userInfo.phoneNumber,
+                token: String(tokenIdentif),
+                statut: userInfo.statut,
+                id: Number(localStorage.getItem('idUser'))
+            },
             nbPlacesReserv: 1,
-            dateReservation: String(Date.now()),
+            dateReservation: formattedDate,
             statut: "en attente"
         }
         console.log(reserv);
+        try {
+            const response = await create(String(tokenIdentif), reserv);
+            if (response) {
+                navigate('/dashboard');
+            } else {
+                console.log("Problème lors de la prise de réservation...");
+            }
+        } catch (e) {
+            console.log("Une erreur est survenue lors de la réservation..." + e);
+        }
     }
 
     if (loading) {

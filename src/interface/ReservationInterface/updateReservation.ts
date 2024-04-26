@@ -1,7 +1,4 @@
-import {Trajet} from "../TrajetInterface/Trajet";
-import {User} from "../UserInterface/User";
-
-export interface AddReservation {
+export interface UpdateReservation {
     trajetDTO: {
         userDTO: {
             name: string,
@@ -24,11 +21,11 @@ export interface AddReservation {
         firstName: string,
         email: string,
         phoneNumber: string,
-        token: string,
         statut: string,
         id: number
     },
     nbPlacesReserv: number,
     dateReservation: string,
-    statut: string
+    statut: string,
+    id: number
 }

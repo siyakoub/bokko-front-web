@@ -10,6 +10,9 @@ import ProfilPage from "../pages/profil/ProfilPage";
 import HomePage from "../pages/home/HomePage";
 import JourneyPage from "../pages/journey-page/JourneyPage";
 import EditJourneyPage from "../pages/journey-page/edit-journey/EditJourneyPage";
+import ListReservationPage from "../pages/list-reservation/listReservationPage";
+import RequestsReservation from "../pages/requests-reservations/RequestsReservation";
+import ReviewPage from "../pages/review/ReviewPage";
 
 const AppRoute: React.FC = () => {
     return (
@@ -24,6 +27,9 @@ const AppRoute: React.FC = () => {
             <Route path={"/new-journey"} element={<CreateTrajetPage/>} />
             <Route path={"/profil"} element={<ProfilPage/>}/>
             <Route path={"/edit-journey"} element={<EditJourneyPage/>} />
+            <Route path={"/my-bookings"} element={<ListReservationPage/>} />
+            <Route path={"/my-booking-requests"} element={<RequestsReservation/>}/>
+            <Route path={"/reviews"} element={<ReviewPage/>}/>
         </Routes>
     );
 };

@@ -120,7 +120,7 @@ export async function getAllByDriver(token: string, email: string) : Promise<Veh
             'token': token
         }
     });
-    if (response.status == 404) {
+    if (response.status === 404) {
         throw new Error("Erreur lors de la récupération...");
     } else if (!response.ok) {
         throw new Error("Une erreur est survenue lors de la récupération des vehicule du conducteur...")

@@ -12,10 +12,7 @@ import { getAll as getAllProfils } from "../service/ProfilService";
 import Footer from "./footer/Footer";
 import {useNavigate} from "react-router-dom";
 import CssBaseline from "@mui/joy/CssBaseline";
-import {CssVarsProvider, useColorScheme} from "@mui/joy/styles";
-import IconButton, {IconButtonProps} from "@mui/joy/IconButton";
-import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
-import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
+import {CssVarsProvider} from "@mui/joy/styles";
 import ColorSchemeToggle from "../pages/home/component/ColorSchemeToggle/ColorSchemeToggle";
 import {CircularProgress} from "@mui/joy";
 

@@ -25,6 +25,50 @@ export async function get(token: string, email: string): Promise<Avis> {
     }
 }
 
+export async function getAllAvisByReservation(token: string, email: string, idReservation: number) : Promise<Avis[] | null> {
+    const response = await fetch(baseUrl + "/allbybooking?email=" + email + "&idReservation=" + idReservation, {
+        method: 'GET',
+        headers : {
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    });
+    if (response.status === 404) {
+        throw new Error('Aucun avis trouvé...');
+    } else if (!response.ok) {
+        throw new Error("Une erreur est survenue lors de la récupération des avis de la réservation...");
+    } else {
+        const data = await response.json();
+        if (data["hasError"] === false) {
+            return data["content"] as Avis[];
+        } else {
+            return null;
+        }
+    }
+}
+
+export async function getAllAvisByUser(token: string, email: string) : Promise<Avis[] | null> {
+    const response = await fetch(baseUrl + "/allbyuser?email=" + email, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    });
+    if (response.status === 404) {
+        throw new Error("Aucun avis trouvé...");
+    } else if (!response.ok) {
+        throw new Error("Une erreur est survenue lors de la récupération des avis de l'utilisateur...");
+    } else {
+        const data = await response.json();
+        if (data["hasError"] === false) {
+            return data["content"] as Avis[];
+        } else {
+            return null;
+        }
+    }
+}
+
 export async function getAll(token: string, page: number, size: number) : Promise<Avis[]> {
     const response = await fetch(baseUrl + "/all?page="+ page.toString() +"&size=" + size.toString(), {
         method: 'GET',

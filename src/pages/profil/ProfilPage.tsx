@@ -10,8 +10,6 @@ import Input from '@mui/joy/Input';
 import IconButton from '@mui/joy/IconButton';
 import Textarea from '@mui/joy/Textarea';
 import Stack from '@mui/joy/Stack';
-import Select from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
 import Typography from '@mui/joy/Typography';
 import './css/spinner.css';
 import './css/fadeUp.css';
@@ -29,9 +27,7 @@ import {Profil} from "../../interface/ProfilInterface/Profil";
 import { Vehicule } from "../../interface/VehiculeInterface/Vehicule";
 import { create as createVehicule } from '../../service/VehiculeService';
 import { getAllByDriver } from "../../service/VehiculeService";
-import {CircularProgress, DialogContent, DialogTitle, Modal, ModalDialog} from "@mui/joy";
-import {User} from "../../interface/UserInterface/User";
-import {AddUser} from "../../interface/UserInterface/AddUser";
+import {CircularProgress, Modal, ModalDialog} from "@mui/joy";
 import {UpdateProfil} from "../../interface/ProfilInterface/UpdateProfil";
 import Snackbar, { SnackbarProps } from '@mui/joy/Snackbar';
 import {Add} from "@mui/icons-material";
@@ -48,8 +44,6 @@ import {
 } from "@mui/material";
 import {AddVehicule} from "../../interface/VehiculeInterface/AddVehicule";
 import {blue} from "@mui/material/colors";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {

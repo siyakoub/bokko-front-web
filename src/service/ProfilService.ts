@@ -27,6 +27,28 @@ export async function getAll(token: string, page: number, size: number): Promise
     }
 }
 
+export async function getAprofil(token: string, email: string): Promise<Profil> {
+    const response = await fetch(baseUrl + "/getaprofil?email=" + email, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'token': token
+        }
+    });
+    if (response.status === 404){
+        throw new Error("Aucun profil trouvé");
+    } else if (!response.ok) {
+        throw new Error("Une erreur est survenue lors de la récupération du profil...");
+    } else {
+        const data = await response.json();
+        if (data['hasError'] === false) {
+            return data['content'] as Profil;
+        } else {
+            throw new Error(data['errorMessage']);
+        }
+    }
+}
+
 export async function get(token: string, email: string): Promise<Profil> {
     const response = await fetch(baseUrl + '/?email=' + email, {
         method: 'GET',

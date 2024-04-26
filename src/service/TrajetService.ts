@@ -1,5 +1,6 @@
 import {Trajet} from "../interface/TrajetInterface/Trajet";
 import {AddTrajet} from "../interface/TrajetInterface/AddTrajet";
+import {UpdateTrajet} from "../interface/TrajetInterface/UpdateTrajet";
 
 const baseUrl: string = 'http://localhost:2001/api/bokko/service/journey';
 
@@ -92,7 +93,7 @@ export async function create(token: string, addTrajet: AddTrajet) : Promise<Traj
     }
 }
 
-export async function update(token: string, email: string, trajet: Trajet): Promise<Trajet> {
+export async function update(token: string, email: string, trajet: UpdateTrajet): Promise<Trajet> {
     const response = await fetch(baseUrl + "/?email=" + email, {
         method: 'PUT',
         headers: {

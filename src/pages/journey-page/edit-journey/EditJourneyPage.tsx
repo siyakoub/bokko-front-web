@@ -17,6 +17,7 @@ import Footer from "../../../component/footer/Footer";
 import {Trajet} from "../../../interface/TrajetInterface/Trajet";
 import {useLocation, useNavigate} from "react-router-dom";
 import {UpdateTrajet} from "../../../interface/TrajetInterface/UpdateTrajet";
+import { update } from '../../../service/TrajetService';
 import dayjs, {Dayjs} from "dayjs";
 
 
@@ -35,17 +36,17 @@ const EditJourneyPage: React.FC = () => {
         navigate('/my-journeys');
     }
 
-    const handleSubmit = (event: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined; }) => {
+    const handleSubmit = async (event: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined; }) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const date = new Date(String(data.get("dateHeure")));
         const padTo2Digits = (num: { toString: () => string; }) => num.toString().padStart(2, '0');
         const formattedDate = `${date.getFullYear()}-${padTo2Digits(date.getMonth() + 1)}-${padTo2Digits(date.getDate())} ${padTo2Digits(date.getHours())}:${padTo2Digits(date.getMinutes())}:00`;
-        const isValidDate = (dateStr: string) => {
+        const isValidDate = async (dateStr: string) => {
             return !isNaN(new Date(dateStr).getTime());
         };
-        let dateToUse = isValidDate(formattedDate) ? String(formattedDate) : String(trajet?.dateHeureDepart);
-        const form : UpdateTrajet = {
+        let dateToUse = await isValidDate(formattedDate) ? String(formattedDate) : String(trajet?.dateHeureDepart);
+        const form: UpdateTrajet = {
             userDTO: {
                 name: String(userInfo.name),
                 firstName: String(userInfo.firstName),
@@ -62,7 +63,16 @@ const EditJourneyPage: React.FC = () => {
             statut: trajet?.statut || String(trajet?.statut),
             id: Number(trajet?.id)
         };
-        console.log(form);
+        try {
+            const response = await update(String(tokenIdentif), String(userInfo.email), form);
+            if (response) {
+                navigate('/my-journeys');
+            } else {
+                console.log("Problème survenue lors de la mise à jour...");
+            }
+        } catch (e) {
+            console.log("Une erreur est survenue lors de la mise à jour du trajet...");
+        }
     }
 
 
@@ -99,7 +109,7 @@ const EditJourneyPage: React.FC = () => {
                                         <FormControl
                                             sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
                                         >
-                                            <Input size="sm" id="arrivee" name="arrivee" placeholder={String(trajet?.nbPlaces)} />
+                                            <Input size="sm" id="arrivee" name="arrivee" placeholder={String(trajet?.arrivee)} />
                                         </FormControl>
                                         <FormLabel>Date et Heure de départ</FormLabel>
                                         <FormControl
@@ -142,6 +152,9 @@ const EditJourneyPage: React.FC = () => {
                     </Box>
                 </form>
             </div>
+            <br/>
+            <br/>
+            <br/>
             <div className="footer-container">
                 <Footer/>
             </div>

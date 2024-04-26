@@ -146,6 +146,9 @@ const CreateTrajetPage: React.FC = () => {
                     </Box>
                 </form>
             </div>
+            <br/>
+            <br/>
+            <br/>
             <div className="footer-container">
                 <Footer/>
             </div>
