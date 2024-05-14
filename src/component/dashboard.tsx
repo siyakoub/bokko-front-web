@@ -62,10 +62,6 @@ const DashBoard = () => {
         );
     }
 
-    if (error) {
-        return <p>{error}</p>;
-    }
-
     return (
         <>
             <Navbar/>

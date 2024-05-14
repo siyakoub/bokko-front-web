@@ -3,6 +3,8 @@ import {AddUser} from "../interface/UserInterface/AddUser";
 import {UserLogin} from "../interface/UserInterface/UserLogin";
 
 const baseUrl : string = 'http://localhost:2001/api/bokko/service/user';
+// const baseUrl : string = 'http://35.203.45.227:2001/api/bokko/service/user';
+// pour la prod
 
 export async function getAll(token: string, page: number, size: number): Promise<User[]> {
     const response = await fetch(baseUrl + "/all?page="+ page.toString() +"&size=" + size.toString(), {

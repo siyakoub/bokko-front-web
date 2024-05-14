@@ -2,6 +2,8 @@ import {Paiement} from "../interface/PaiementInterface/Paiement";
 import {AddPaiement} from "../interface/PaiementInterface/AddPaiement";
 
 const baseUrl: string = 'http://localhost:2001/api/bokko/service/payment';
+// const baseUrl: string = 'http://35.203.45.227:2001/api/bokko/service/payment';
+//pour la prod
 
 export async function get(token: string, email: string) : Promise<Paiement> {
     const response = await fetch(baseUrl + "/?email=" + email, {

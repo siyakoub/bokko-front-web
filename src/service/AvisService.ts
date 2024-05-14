@@ -2,6 +2,8 @@ import {Avis} from "../interface/AvisInterface/Avis";
 import {AddAvis} from "../interface/AvisInterface/AddAvis";
 
 const baseUrl: string = 'http://localhost:2001/api/bokko/service/review';
+// const baseUrl: string = 'http://35.203.45.227:2001/api/bokko/service/review';
+//Pour la prod
 
 export async function get(token: string, email: string): Promise<Avis> {
     const response = await fetch(baseUrl + '/?email=' + email, {

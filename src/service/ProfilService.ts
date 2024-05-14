@@ -4,6 +4,8 @@ import {ProfilRegister} from "../interface/ProfilInterface/ProfilRegister";
 import {UpdateProfil} from "../interface/ProfilInterface/UpdateProfil";
 
 const baseUrl : string = 'http://localhost:2001/api/bokko/service/profil';
+// const baseUrl : string = 'http://35.203.45.227:2001/api/bokko/service/profil';
+// pour la prod
 
 export async function getAll(token: string, page: number, size: number): Promise<Profil[]> {
     const response = await fetch(baseUrl + "/all?page="+ page.toString() +"&size=" + size.toString(), {

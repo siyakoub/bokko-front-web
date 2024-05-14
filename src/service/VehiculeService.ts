@@ -3,6 +3,7 @@ import {AddVehicule} from "../interface/VehiculeInterface/AddVehicule";
 import {UpdateVehicule} from "../interface/VehiculeInterface/UpdateVehicule";
 
 const baseUrl : string = 'http://localhost:2001/api/bokko/service/vehicule';
+// const baseUrl : string = 'http://35.203.45.227:2001/api/bokko/service/vehicule';
 
 
 export async function get(token: string, email: string) : Promise<Vehicule> {

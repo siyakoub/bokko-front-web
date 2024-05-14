@@ -3,6 +3,8 @@ import {AddTrajet} from "../interface/TrajetInterface/AddTrajet";
 import {UpdateTrajet} from "../interface/TrajetInterface/UpdateTrajet";
 
 const baseUrl: string = 'http://localhost:2001/api/bokko/service/journey';
+// const baseUrl: string = 'http://35.203.45.227:2001/api/bokko/service/journey';
+// pour la prod
 
 export async function get(token: string, email: string): Promise<Trajet> {
     const response = await fetch(baseUrl + '/?email=' + email, {
