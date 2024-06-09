@@ -67,7 +67,7 @@ export default function TwoSidedLayout({
                 })}
             >
                 <img
-                    src="https://images.unsplash.com/photo-1483791424735-e9ad0209eea2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
+                    src="https://i.ibb.co/7W6cmJc/app-mobile.jpg"
                     alt=""
                 />
             </AspectRatio>

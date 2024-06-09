@@ -60,10 +60,6 @@ const HomePage: React.FC = () => {
             <Navbar/>
             <div className="fadeInUpAnimation" ref={sectionRef}>
                 <div className="app-header"></div>
-                <div className="con">
-                    <SearchBar onSearch={() => {/* logique de recherche ici */
-                    }}/>
-                </div>
                 <div>
                     <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
                         <CssBaseline />

@@ -5,29 +5,36 @@ import Link from '@mui/joy/Link';
 import Typography from '@mui/joy/Typography';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import TwoSidedLayout from './twoSidedLayout/TwoSidedLayout';
+import {useNavigate} from "react-router-dom";
 
 export default function HeroLeft01() {
+
+    const navigation = useNavigate();
+
+    const handleRegister = () => {
+        navigation("/register")
+    };
+
     return (
         <TwoSidedLayout>
             <Typography color="primary" fontSize="lg" fontWeight="lg">
-                The power to do more
+                Partagez plus que votre trajet
             </Typography>
             <Typography
                 level="h1"
                 fontWeight="xl"
                 fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
             >
-                A large headlinerer about our product features & services
+                Découvrez une nouvelle manière de voyager
             </Typography>
             <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-                A descriptive secondary text placeholder. Use it to explain your business
-                offer better.
+                Rejoignez notre communauté de covoiturage et explorez une façon plus économique, écologique et conviviale de vous déplacer. Que vous soyez conducteur ou passager, chaque trajet est une occasion de faire des rencontres et de partager bien plus qu'un simple trajet.
             </Typography>
-            <Button size="lg" endDecorator={<ArrowForward fontSize="large" />}>
-                Get Started
+            <Button size="lg" onClick={handleRegister} endDecorator={<ArrowForward fontSize="large" />}>
+                Commencez votre voyage
             </Button>
             <Typography>
-                Already a member? <Link fontWeight="lg">Sign in</Link>
+                Déjà membre ? <Link href={"/login"} fontWeight="lg">Connectez-vous</Link>
             </Typography>
             <Typography
                 level="body-xs"

@@ -250,10 +250,10 @@ export default function SignIn() {
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
                     backgroundImage:
-                        'url(https://i.ibb.co/C9NWVmY/img6.jpg)',
+                        'url(https://i.ibb.co/HdbQNr7/DALL-E-2024-06-09-18-59-29-A-modern-eco-friendly-car-on-a-sunny-road-in-Africa-surrounded-by-typical.webp)',
                     [theme.getColorSchemeSelector('dark')]: {
                         backgroundImage:
-                            'url(https://i.ibb.co/qJNRTNc/img4.jpg)',
+                            'url(https://i.ibb.co/GHKRjXc/DALL-E-2024-06-09-18-59-10-A-modern-eco-friendly-car-on-a-road-in-Africa-at-night-surrounded-by-typi.webp)',
                     },
                 })}
             />

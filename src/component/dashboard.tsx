@@ -7,7 +7,7 @@ import "./dashboard.css";
 import { Trajet } from "../interface/TrajetInterface/Trajet";
 import { Profil } from "../interface/ProfilInterface/Profil";
 // Importez vos services
-import { getAll as getAllTrajets } from "../service/TrajetService";
+import {getAll as getAllTrajets, getAllTrajetToBecome} from "../service/TrajetService";
 import { getAll as getAllProfils } from "../service/ProfilService";
 import Footer from "./footer/Footer";
 import {useNavigate} from "react-router-dom";
@@ -38,7 +38,7 @@ const DashBoard = () => {
             } else {
                 setLoading(true);
                 try {
-                    const fetchedTrajets = await getAllTrajets(tokenIdentif, page, size);
+                    const fetchedTrajets = await getAllTrajetToBecome(tokenIdentif, userInfo.email);
                     const fetchedProfils = await getAllProfils(tokenIdentif, page, size);
                     setTrajets(fetchedTrajets);
                     setProfils(fetchedProfils);

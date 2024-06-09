@@ -18,7 +18,7 @@ export async function get(token: string, email: string) : Promise<Reservation> {
         throw new Error("Aucun trajet trouvé...");
     } else if (!response.ok) {
         throw new Error("Une erreur est survenue lors de la récupération de la réservation...");
-    } else {
+    } else { 
         const data = await response.json();
         if (data["hasError"] === false) {
             return data["content"] as Reservation;

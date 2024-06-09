@@ -7,23 +7,30 @@ import Button from '@mui/joy/Button';
 import Typography from '@mui/joy/Typography';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import TwoSidedLayout from './twoSidedLayout/TwoSidedLayout';
+import {useNavigate} from "react-router-dom";
 
 export default function HeroLeft02() {
+
+    const navigation = useNavigate();
+
+    const handleRegister = () => {
+        navigation("/register")
+    };
+
     return (
         <TwoSidedLayout>
             <Typography color="primary" fontSize="lg" fontWeight="lg">
-                The power to do more
+                Partagez plus qu'un trajet
             </Typography>
             <Typography
                 level="h1"
                 fontWeight="xl"
                 fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
             >
-                A large headlinerer about our product features & services
+                Transformez vos déplacements quotidiens avec BokYon
             </Typography>
             <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-                A descriptive secondary text placeholder. Use it to explain your business
-                offer better.
+                Rejoignez notre communauté et découvrez une manière plus conviviale et économique de voyager. Notre application facilite la mise en relation entre conducteurs et passagers pour des trajets partagés, réduisant ainsi les coûts de transport et l'empreinte écologique. Parfait pour vos déplacements réguliers ou occasionnels.
             </Typography>
             <Box
                 sx={{
@@ -34,34 +41,9 @@ export default function HeroLeft02() {
                     '& > *': { flex: 'auto' },
                 }}
             >
-                <Button size="lg" variant="outlined" color="neutral">
-                    Learn More
+                <Button size="lg" onClick={handleRegister} endDecorator={<ArrowForward fontSize="large" />}>
+                    Commencez maintenant
                 </Button>
-                <Button size="lg" endDecorator={<ArrowForward fontSize="large" />}>
-                    Get Started
-                </Button>
-            </Box>
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    gap: 2,
-                    textAlign: 'left',
-                    '& > *': {
-                        flexShrink: 0,
-                    },
-                }}
-            >
-                <AvatarGroup size="lg">
-                    <Avatar />
-                    <Avatar />
-                    <Avatar />
-                </AvatarGroup>
-                <Typography textColor="text.secondary">
-                    Join a community of over <b>10K</b> <br />
-                    designers and developers.
-                </Typography>
             </Box>
             <Typography
                 level="body-xs"

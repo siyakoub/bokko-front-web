@@ -16,11 +16,10 @@ export default function HeroLeft03() {
                 fontWeight="xl"
                 fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
             >
-                A large headlinerer about our product features & services
+                Voyagez malin avec BokYon Mobile
             </Typography>
             <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-                A descriptive secondary text placeholder. Use it to explain your business
-                offer better.
+                Découvrez comment notre application simplifie chaque étape de votre covoiturage. Grâce à BokYon, connectez-vous instantanément avec des conducteurs et des passagers de votre région, gérez vos trajets facilement et voyagez de manière plus économique et écologique.
             </Typography>
             <Card
                 variant="outlined"
@@ -31,15 +30,11 @@ export default function HeroLeft03() {
                 <AutoAwesomeIcon color="success" fontSize="large"/>
                 <div>
                     <Typography fontSize="xl" fontWeight="lg" sx={{ mb: 1 }}>
-                        The new version is out.
-                    </Typography>
-                    <Typography level="body-sm">
-                        This is where a notification message will appear. <br />
-                        Enter text into this container.
+                        La nouvelle version sera bientôt disponible !
                     </Typography>
                 </div>
             </Card>
-            <Button size="lg">Download the App</Button>
+            <Button size="lg">Téléchargez l'App</Button>
             <Typography
                 level="body-xs"
                 sx={{
