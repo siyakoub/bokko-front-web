@@ -3,8 +3,9 @@ import {AddReservation} from "../interface/ReservationInterface/addReservation";
 import {UpdateReservation} from "../interface/ReservationInterface/updateReservation";
 
 // const baseUrl : string = 'http://localhost:2001/api/bokko/service/booking';
-const baseUrl : string = 'http://35.203.45.227:2001/api/bokko/service/booking';
-//pour la prod
+// const baseUrl : string = 'http://35.203.45.227:2001/api/bokko/service/booking';
+//pour le serveur dev
+const baseUrl : string = 'https://api.bokyon-app.com/api/bokko/service/booking';
 
 export async function get(token: string, email: string) : Promise<Reservation> {
     const response = await fetch(baseUrl + "/?email=" + email, {

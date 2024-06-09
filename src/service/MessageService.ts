@@ -2,8 +2,9 @@ import {Message} from "../interface/MessageInterface/Message";
 import {AddMessage} from "../interface/MessageInterface/AddMessage";
 
 //const baseUrl: string = 'http://localhost:2001/api/bokko/service/message';
-const baseUrl: string = 'http://35.203.45.227:2001/api/bokko/service/message';
-//pour la prod
+// const baseUrl: string = 'http://35.203.45.227:2001/api/bokko/service/message';
+//pour le serveur dev
+const baseUrl : string = 'https://api.bokyon-app.com/api/bokko/service/message';
 
 export async function get(token: string, email: string): Promise<Message> {
     const response = await fetch(baseUrl + "/?email=" + email, {
