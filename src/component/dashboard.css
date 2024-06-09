@@ -159,9 +159,9 @@ only screen and (min-width: 412px) and (max-width: 914px) {
 @keyframes slideshow {
     0% { background-image: url('https://i.ibb.co/HdbQNr7/DALL-E-2024-06-09-18-59-29-A-modern-eco-friendly-car-on-a-sunny-road-in-Africa-surrounded-by-typical.webp'); }
     25% { background-image: url('https://i.ibb.co/nLGbBJq/DALL-E-2024-06-09-18-59-20-A-modern-eco-friendly-car-on-a-sunny-road-in-Africa-surrounded-by-typical.webp'); }
-    50% { background-image: url('https://i.ibb.co/86W7h3C/DALL-E-2024-06-09-18-59-18-A-modern-eco-friendly-car-on-a-sunny-road-in-Africa-surrounded-by-typical.webp'); }
+    50% { background-image: url('https://i.ibb.co/GHKRjXc/DALL-E-2024-06-09-18-59-10-A-modern-eco-friendly-car-on-a-road-in-Africa-at-night-surrounded-by-typi.webp'); }
     75% { background-image: url('https://i.ibb.co/4WbPRKf/DALL-E-2024-06-09-18-59-16-A-modern-eco-friendly-car-on-a-road-in-Africa-at-night-surrounded-by-typi.webp'); }
-    100% { background-image: url('https://i.ibb.co/GHKRjXc/DALL-E-2024-06-09-18-59-10-A-modern-eco-friendly-car-on-a-road-in-Africa-at-night-surrounded-by-typi.webp'); } /* Retour à la première image */
+    100% { background-image: url('https://i.ibb.co/HdbQNr7/DALL-E-2024-06-09-18-59-29-A-modern-eco-friendly-car-on-a-sunny-road-in-Africa-surrounded-by-typical.webp'); } /* Retour à la première image */
 }
 
 .app-header {
